@@ -1,8 +1,17 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input } from "@nextui-org/react";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Divider,
+  Input,
+} from "@nextui-org/react"
+import React from "react"
+import { useNavigate } from "react-router-dom"
 
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form"
+import databaseService from "../supabase/database"
 function Register() {
   // const navigate = useNavigate("/");
 
@@ -22,12 +31,17 @@ function Register() {
       email4: "",
       teamName: "",
     },
-  });
+  })
 
   const onSubmit = (data) => {
-    let teamData = { name: data.name, emailIDs: [data.email1, data.email2, data.email3, data.email4] };
-    alert(JSON.stringify(data));
-  };
+    let teamData = {
+      name: data.teamName,
+      members: [data.email1, data.email2, data.email3, data.email4],
+    }
+    databaseService.register(teamData).then(({ error }) => {
+      console.log(error)
+    })
+  }
 
   return (
     <div className="space-y-4 lg:max-w-[60%]">
@@ -66,7 +80,9 @@ function Register() {
               control={control}
               rules={{
                 required: true,
-                validate: { iiserb: (value) => !value.includes("iiserb.ac.in") },
+                validate: {
+                  iiserb: (value) => !value.includes("iiserb.ac.in"),
+                },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
@@ -88,7 +104,9 @@ function Register() {
               control={control}
               rules={{
                 required: true,
-                validate: { iiserb: (value) => !value.includes("iiserb.ac.in") },
+                validate: {
+                  iiserb: (value) => !value.includes("iiserb.ac.in"),
+                },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
@@ -109,7 +127,9 @@ function Register() {
               control={control}
               rules={{
                 required: true,
-                validate: { iiserb: (value) => !value.includes("iiserb.ac.in") },
+                validate: {
+                  iiserb: (value) => !value.includes("iiserb.ac.in"),
+                },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
@@ -130,7 +150,9 @@ function Register() {
               control={control}
               rules={{
                 required: true,
-                validate: { iiserb: (value) => !value.includes("iiserb.ac.in") },
+                validate: {
+                  iiserb: (value) => !value.includes("iiserb.ac.in"),
+                },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
@@ -154,7 +176,7 @@ function Register() {
         </Card>
       </form>
     </div>
-  );
+  )
 }
 
-export default Register;
+export default Register
