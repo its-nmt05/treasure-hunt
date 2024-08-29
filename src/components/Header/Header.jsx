@@ -22,7 +22,7 @@ function Header() {
           <p className="text-lg font-bold">IISERB QUIZ</p>
         </NavbarBrand>
       </NavbarContent>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+      <NavbarContent justify="center">
         {navItems.map((item) => (
           <NavbarItem
             color="foreground"
