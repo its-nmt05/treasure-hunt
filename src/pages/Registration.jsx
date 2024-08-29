@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Input } from "@nextui-org/react";
+import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input } from "@nextui-org/react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -107,14 +107,14 @@ function Register() {
                 />
               )}
             />
-
+            <Divider />
             <Controller
               name="email1"
               control={control}
               rules={{
                 required: true,
                 validate: {
-                  iiserb: (value) => value.includes("iiserb.ac.in"),
+                  iiserb: (value) => value.includes("24@iiserb.ac.in"),
                   duplicateEmails: (value, formValues) => value !== formValues.email2 || value !== formValues.email3 || value !== formValues.email4,
                 },
               }}
@@ -139,7 +139,7 @@ function Register() {
               rules={{
                 required: true,
                 validate: {
-                  iiserb: (value) => value.includes("iiserb.ac.in"),
+                  iiserb: (value) => value.includes("24@iiserb.ac.in"),
                   duplicateEmails: (value, formValues) => value !== formValues.email1 || value !== formValues.email3 || value !== formValues.email4,
                 },
               }}
@@ -164,7 +164,7 @@ function Register() {
               rules={{
                 required: true,
                 validate: {
-                  iiserb: (value) => value.includes("iiserb.ac.in"),
+                  iiserb: (value) => value.includes("24@iiserb.ac.in"),
                   duplicateEmails: (value, formValues) => value !== formValues.email2 || value !== formValues.email1 || value !== formValues.email4,
                 },
               }}
@@ -189,7 +189,7 @@ function Register() {
               rules={{
                 required: true,
                 validate: {
-                  iiserb: (value) => value.includes("iiserb.ac.in"),
+                  iiserb: (value) => value.includes("24@iiserb.ac.in"),
                   duplicateEmails: (value, formValues) => value !== formValues.email2 || value !== formValues.email3 || value !== formValues.email1,
                 },
               }}

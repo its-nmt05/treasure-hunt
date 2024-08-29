@@ -63,7 +63,7 @@ function QuizCard({ question: { id, created_at, title, points, level, media, med
   const skipQuestion = () => {
     databaseService.skip_question({ question_id: id, team_id: teamId }).then(({ data, error }) => {
       console.log(data, error);
-      navigate("/team");
+      navigate(0);
     });
   };
 

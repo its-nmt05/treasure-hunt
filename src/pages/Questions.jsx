@@ -20,16 +20,14 @@ function Questions() {
     console.log(11, powerUps);
   }, []);
 
-  const teamLevel = 3;
-  const teamName = "Some team";
   return (
     <div className="space-y-12">
-      <p className="font-bold">Team Name: {teamName}</p>
-      <h2 className="font-bold text-[2em] text-center">Level : {teamLevel} / 12</h2>
+      {/* <p className="font-bold">Team Name: {teamName}</p> */}
+      <h2 className="font-bold text-[2em] text-center">Level : {question.level != undefined ? question.level : null} / 2</h2>
       <QuizCard
         teamId={teamId}
         question={question}
-        index={teamLevel - 1}
+        index={question.level != undefined ? question.level - 1 : 0}
         className="w-[40rem]"
         hintsLeft={powerUps.hint_questions ? 3 - powerUps.hint_questions.length : 3}
         skipsLeft={powerUps.skipped_questions ? 0 : 1}
