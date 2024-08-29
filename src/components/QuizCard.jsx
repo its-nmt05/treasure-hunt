@@ -1,22 +1,43 @@
-import { Button, Card, CardHeader, Divider, Input } from "@nextui-org/react";
-import React from "react";
-import { numFormat } from "../utils/Helper";
-import { useForm, Controller } from "react-hook-form";
+import { Button, Card, CardHeader, Divider, Input } from "@nextui-org/react"
+import React from "react"
+import { numFormat } from "../utils/Helper"
+import { useForm, Controller } from "react-hook-form"
+import databaseService from "../supabase/database"
 
-function QuizCard({ question: { title, options, points, media, media_type, answerType }, index, className = "", teamId, hintsLeft, skipsLeft }) {
+function QuizCard({
+  question: { id, title, options, points, media, media_type, answerType },
+  index,
+  className = "",
+  teamId,
+  hintsLeft,
+  skipsLeft,
+}) {
   const Media = () => {
     if (media_type == "image") {
-      return <img src={media} className="aspect-video object-cover rounded-lg max-w-[600px]" alt="image" />;
+      return (
+        <img
+          src={media}
+          className="aspect-video object-cover rounded-lg max-w-[600px]"
+          alt="image"
+        />
+      )
     } else if (media_type == "video") {
-      return <video autoPlay controls className="aspect-video object-cover rounded-lg max-w-[600px]" src={media} />;
+      return (
+        <video
+          autoPlay
+          controls
+          className="aspect-video object-cover rounded-lg max-w-[600px]"
+          src={media}
+        />
+      )
     } else if (media_type == "audio") {
       return (
         <div>
           <audio controls autoPlay src={media} />
         </div>
-      );
+      )
     }
-  };
+  }
 
   const {
     register,
@@ -30,12 +51,31 @@ function QuizCard({ question: { title, options, points, media, media_type, answe
     defaultValues: {
       answer: "",
     },
-  });
+  })
 
   const onSubmit = (data) => {
-    let teamData = { name: data.name, emailIDs: [data.email1, data.email2, data.email3, data.email4] };
-    alert(JSON.stringify(data));
-  };
+    databaseService
+      .submit_question({
+        question_id: id,
+        team_id: teamId,
+        answer: data.answer,
+      })
+      .then(({ data, error }) => {
+        console.log(data, error)
+      })
+  }
+
+  const getHint = () => {
+    databaseService
+      .get_hint({ question_id: id, team_id: teamId })
+      .then(({ data, error }) => console.log(data, error))
+  }
+
+  const skipQuestion = () => {
+    databaseService
+      .skip_question({ question_id: id, team_id: teamId })
+      .then(({ data, error }) => console.log(data, error))
+  }
 
   return (
     <div className={`space-y-5 ${className}`}>
@@ -75,7 +115,12 @@ function QuizCard({ question: { title, options, points, media, media_type, answe
                 />
               )}
             />
-            <Button size="lg" color="primary" className="w-200 mx-auto" type="submit">
+            <Button
+              size="lg"
+              color="primary"
+              className="w-200 mx-auto"
+              type="submit"
+            >
               <p className="text-lg">Submit</p>
             </Button>
           </div>
@@ -92,16 +137,28 @@ function QuizCard({ question: { title, options, points, media, media_type, answe
         )}
         <Divider className="my-4" />
         <div className="flex gap-2 justify-center mt-2">
-          <Button size="lg" color="secondary" className="w-200" disabled={hintsLeft == 0}>
+          <Button
+            size="lg"
+            color="secondary"
+            className="w-200"
+            disabled={hintsLeft == 0}
+            onPress={getHint}
+          >
             <p className="text-lg">Use a hint ({hintsLeft})</p>
           </Button>
-          <Button size="lg" color="secondary" className="w-200" disabled={skipsLeft == 0}>
+          <Button
+            size="lg"
+            color="secondary"
+            className="w-200"
+            disabled={skipsLeft == 0}
+            onPress={skipQuestion}
+          >
             <p className="text-lg">Skip Question ({skipsLeft})</p>
           </Button>
         </div>
       </form>
     </div>
-  );
+  )
 }
 
-export default QuizCard;
+export default QuizCard

@@ -6,7 +6,7 @@ import { getTeamId } from "../utils/Helper"
 
 function Home() {
   const navigate = useNavigate()
-  const team_Id = getTeamId()
+  const teamId = getTeamId()
 
   return (
     <div className="space-y-4 lg:max-w-[60%]">
@@ -84,8 +84,8 @@ function Home() {
         color="primary"
         className="w-full"
         onPress={() => {
-          if (team_Id) {
-            navigate(`/${team_Id}`)
+          if (teamId) {
+            navigate(`/team/${teamId}`)
           } else {
             navigate("/register")
           }

@@ -14,11 +14,11 @@ import databaseService from "../supabase/database"
 import { getTeamId, saveTeamId } from "../utils/Helper"
 function Register() {
   const navigate = useNavigate()
-  const team_id = getTeamId()
+  const teamId = getTeamId()
 
   useEffect(() => {
-    if (team_id) {
-      navigate(`/${team_id}`)
+    if (teamId) {
+      navigate(`/team/${teamId}`)
     }
   })
 
@@ -48,7 +48,7 @@ function Register() {
     databaseService.register(teamData).then(({ data, error }) => {
       if (!error) {
         saveTeamId(data)
-        navigate(`/${data}`)
+        navigate(`/team/${data}`)
       }
     })
   }

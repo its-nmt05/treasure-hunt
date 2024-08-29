@@ -7,12 +7,12 @@ function numFormat(num) {
     return num.toString().padStart(2, 0)
 }
 
-function saveTeamId(team_id) {
-    localStorage.setItem("team_id", team_id)
+function saveTeamId(teamId) {
+    localStorage.setItem("teamId", teamId)
 }
 
 function getTeamId() {
-    return localStorage.getItem("team_id")
+    return localStorage.getItem("teamId")
 }
 
 export { numFormat, saveTeamId, getTeamId }
