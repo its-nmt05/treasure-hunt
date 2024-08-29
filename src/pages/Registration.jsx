@@ -115,6 +115,7 @@ function Register() {
                 required: true,
                 validate: {
                   iiserb: (value) => value.includes("iiserb.ac.in"),
+                  duplicateEmails: (value, formValues) => value !== formValues.email2 || value !== formValues.email3 || value !== formValues.email4,
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -139,6 +140,7 @@ function Register() {
                 required: true,
                 validate: {
                   iiserb: (value) => value.includes("iiserb.ac.in"),
+                  duplicateEmails: (value, formValues) => value !== formValues.email1 || value !== formValues.email3 || value !== formValues.email4,
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -163,6 +165,7 @@ function Register() {
                 required: true,
                 validate: {
                   iiserb: (value) => value.includes("iiserb.ac.in"),
+                  duplicateEmails: (value, formValues) => value !== formValues.email2 || value !== formValues.email1 || value !== formValues.email4,
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -187,6 +190,7 @@ function Register() {
                 required: true,
                 validate: {
                   iiserb: (value) => value.includes("iiserb.ac.in"),
+                  duplicateEmails: (value, formValues) => value !== formValues.email2 || value !== formValues.email3 || value !== formValues.email1,
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (

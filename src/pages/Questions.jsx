@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { QuizCard } from "../components";
 import questions from "../data/questions";
 import databaseService from "../supabase/database";
@@ -7,11 +7,15 @@ import { getTeamId } from "../utils/Helper";
 
 function Questions() {
   const teamId = getTeamId();
+  const navigate = useNavigate();
   const [powerUps, setPowerUps] = useState(getTeamId());
   const [question, setQuestion] = useState({});
 
   useEffect(() => {
-    databaseService.getQuestion(teamId).then((res, error) => setQuestion(res.data.length > 0 ? res.data[0] : null));
+    databaseService.getQuestion(teamId).then((res, error) => {
+      if (!res.data) navigate("/leader-board");
+      setQuestion(res.data ? res.data[0] : null);
+    });
     databaseService.getPowerUpDetails(teamId).then((res, error) => setPowerUps(res.data.length > 0 ? res.data[0] : null));
     console.log(11, powerUps);
   }, []);

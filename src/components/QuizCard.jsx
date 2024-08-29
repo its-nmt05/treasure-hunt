@@ -47,7 +47,9 @@ function QuizCard({ question: { id, created_at, title, points, level, media, med
         answer: data.answer,
       })
       .then(({ data, error }) => {
-        console.log(data, error);
+        if (data) {
+          navigate(0);
+        }
       });
   };
 
