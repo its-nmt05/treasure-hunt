@@ -16,7 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/leader-board" element={<Leaderboard />} />
-          <Route path="/team/:teamId" element={<Questions />} />
+          <Route path="/team" element={<Questions />} />
         </Route>
       </Routes>
     </NextUIProvider>

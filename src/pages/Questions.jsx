@@ -1,21 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { QuizCard } from "../components";
 import questions from "../data/questions";
-import { Button } from "@nextui-org/react";
+import databaseService from "../supabase/database";
+import { getTeamId } from "../utils/Helper";
 
 function Questions() {
-  const { teamId } = useParams();
+  const teamId = getTeamId();
+  const [powerUps, setPowerUps] = useState(getTeamId());
+  const [question, setQuestion] = useState({});
+
+  useEffect(() => {
+    databaseService.getQuestion(teamId).then((res, error) => setQuestion(res.data.length > 0 ? res.data[0] : null));
+    databaseService.getPowerUpDetails(teamId).then((res, error) => setPowerUps(res.data.length > 0 ? res.data[0] : null));
+    console.log(11, powerUps);
+  }, []);
+
   const teamLevel = 3;
+  const teamName = "Some team";
   return (
     <div className="space-y-12">
-      <p className="font-bold">Team Name: {teamId}</p>
+      <p className="font-bold">Team Name: {teamName}</p>
       <h2 className="font-bold text-[2em] text-center">Level : {teamLevel} / 12</h2>
-      <QuizCard teamId={teamId} question={questions[0]} index={teamLevel - 1} className="w-[40rem]" hintsLeft={3} skipsLeft={1} />
-
-      {/* {questions.slice(-3).map((q, index) => (
-        <QuizCard key={q.id} question={q} index={index} className="w-[40rem]" />
-      ))} */}
+      <QuizCard
+        teamId={teamId}
+        question={question}
+        index={teamLevel - 1}
+        className="w-[40rem]"
+        hintsLeft={powerUps.hint_questions ? 3 - powerUps.hint_questions.length : 3}
+        skipsLeft={powerUps.skipped_questions ? 0 : 1}
+        hintUsed={powerUps.hint_questions ? powerUps.hint_questions.includes(question.id) : null}
+      />
     </div>
   );
 }

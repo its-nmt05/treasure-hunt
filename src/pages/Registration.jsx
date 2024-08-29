@@ -1,26 +1,38 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Input,
-} from "@nextui-org/react"
-import React, { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { Button, Card, CardBody, CardFooter, CardHeader, Input } from "@nextui-org/react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { useForm, Controller } from "react-hook-form"
-import databaseService from "../supabase/database"
-import { getTeamId, saveTeamId } from "../utils/Helper"
+import { useForm, Controller } from "react-hook-form";
+import databaseService from "../supabase/database";
+import { getTeamId, saveTeamId } from "../utils/Helper";
+
+const groupedByLevel = (questions) =>
+  questions.reduce((acc, question) => {
+    const { level } = question;
+    if (!acc[level]) {
+      acc[level] = [];
+    }
+    acc[level].push(question);
+    return acc;
+  }, {});
+
+const shuffleQuestions = (groupedQuestions) => {
+  let questionsArr = [];
+  for (const level of Object.keys(groupedQuestions)) {
+    questionsArr.push(groupedQuestions[level][Math.random() * (groupedQuestions[level].length - 1)].id);
+  }
+  return questionsArr;
+};
+
 function Register() {
-  const navigate = useNavigate()
-  const teamId = getTeamId()
+  const navigate = useNavigate();
+  const teamId = getTeamId();
 
   useEffect(() => {
     if (teamId) {
-      navigate(`/team/${teamId}`)
+      navigate(`/team`);
     }
-  })
+  });
 
   const {
     register,
@@ -38,20 +50,31 @@ function Register() {
       email4: "",
       teamName: "",
     },
-  })
+  });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    const questions = await databaseService.getAllQuestions();
+
+    if (questions.status != 200) return null;
+
+    let questionsDataByLevel = groupedByLevel(questions.data);
+    let generatedPath = shuffleQuestions(questionsDataByLevel);
+
     let teamData = {
       name: data.teamName,
       members: [data.email1, data.email2, data.email3, data.email4],
+    };
+
+    const res = await databaseService.register(teamData);
+    if (!res.error) {
+      const updateRes = await databaseService.generatePath(generatedPath, res.data);
+      console.log(updateRes, generatedPath, res.data);
+      saveTeamId(res.data);
+      navigate(`/team`);
+    } else {
+      console.log(res.error);
     }
-    databaseService.register(teamData).then(({ data, error }) => {
-      if (!error) {
-        saveTeamId(data)
-        navigate(`/team/${data}`)
-      }
-    })
-  }
+  };
 
   return (
     <div className="space-y-4 lg:max-w-[60%]">
@@ -91,7 +114,7 @@ function Register() {
               rules={{
                 required: true,
                 validate: {
-                  iiserb: (value) => !value.includes("iiserb.ac.in"),
+                  iiserb: (value) => value.includes("iiserb.ac.in"),
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -115,7 +138,7 @@ function Register() {
               rules={{
                 required: true,
                 validate: {
-                  iiserb: (value) => !value.includes("iiserb.ac.in"),
+                  iiserb: (value) => value.includes("iiserb.ac.in"),
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -128,6 +151,7 @@ function Register() {
                   onChange={onChange}
                   onClear={() => setValue("email2", "")}
                   errorMessage={errors.email2 && "Email is required"}
+                  validationState={errors.email2 ? "invalid" : "valid"}
                 />
               )}
             />
@@ -138,7 +162,7 @@ function Register() {
               rules={{
                 required: true,
                 validate: {
-                  iiserb: (value) => !value.includes("iiserb.ac.in"),
+                  iiserb: (value) => value.includes("iiserb.ac.in"),
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -151,6 +175,7 @@ function Register() {
                   onChange={onChange}
                   onClear={() => setValue("email3", "")}
                   errorMessage={errors.email3 && "Email is required"}
+                  validationState={errors.email2 ? "invalid" : "valid"}
                 />
               )}
             />
@@ -161,7 +186,7 @@ function Register() {
               rules={{
                 required: true,
                 validate: {
-                  iiserb: (value) => !value.includes("iiserb.ac.in"),
+                  iiserb: (value) => value.includes("iiserb.ac.in"),
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -174,6 +199,7 @@ function Register() {
                   onChange={onChange}
                   onClear={() => setValue("email4", "")}
                   errorMessage={errors.email3 && "Email is required"}
+                  validationState={errors.email2 ? "invalid" : "valid"}
                 />
               )}
             />
@@ -186,7 +212,7 @@ function Register() {
         </Card>
       </form>
     </div>
-  )
+  );
 }
 
-export default Register
+export default Register;
