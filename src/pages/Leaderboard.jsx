@@ -9,6 +9,7 @@ import {
 } from "@nextui-org/react"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import databaseService from "../supabase/database"
+import { numFormat } from "../utils/Helper"
 
 function Leaderboard() {
   const [teams, setTeams] = useState([])
@@ -33,7 +34,7 @@ function Leaderboard() {
     const { name, level, points } = team
     switch (columnKey) {
       case "number":
-        return <p>{teams.indexOf(team)}</p>
+        return <p>{numFormat(teams.indexOf(team))}</p>
       case "name":
         return <p>{name}</p>
       case "level":

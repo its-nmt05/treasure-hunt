@@ -4,16 +4,23 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Divider,
   Input,
 } from "@nextui-org/react"
-import React from "react"
+import React, { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { useForm, Controller } from "react-hook-form"
 import databaseService from "../supabase/database"
+import { getTeamId, saveTeamId } from "../utils/Helper"
 function Register() {
-  // const navigate = useNavigate("/");
+  const navigate = useNavigate()
+  const team_id = getTeamId()
+
+  useEffect(() => {
+    if (team_id) {
+      navigate(`/${team_id}`)
+    }
+  })
 
   const {
     register,
@@ -38,8 +45,11 @@ function Register() {
       name: data.teamName,
       members: [data.email1, data.email2, data.email3, data.email4],
     }
-    databaseService.register(teamData).then(({ error }) => {
-      console.log(error)
+    databaseService.register(teamData).then(({ data, error }) => {
+      if (!error) {
+        saveTeamId(data)
+        navigate(`/${data}`)
+      }
     })
   }
 

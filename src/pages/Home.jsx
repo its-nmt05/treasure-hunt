@@ -2,10 +2,11 @@ import { Button, Card, CardBody, CardHeader } from "@nextui-org/react"
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import image from "../static/images/bg_image.jpg"
+import { getTeamId } from "../utils/Helper"
 
 function Home() {
   const navigate = useNavigate()
-  const teamId = 214
+  const team_Id = getTeamId()
 
   return (
     <div className="space-y-4 lg:max-w-[60%]">
@@ -82,7 +83,13 @@ function Home() {
         size="lg"
         color="primary"
         className="w-full"
-        onPress={() => navigate(`/${teamId}`)}
+        onPress={() => {
+          if (team_Id) {
+            navigate(`/${team_Id}`)
+          } else {
+            navigate("/register")
+          }
+        }}
       >
         <p className="text-lg">Travel to wonderland!</p>
       </Button>
