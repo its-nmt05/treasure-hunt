@@ -25,6 +25,7 @@ function Register() {
   });
 
   const onSubmit = (data) => {
+    let teamData = { name: data.name, emailIDs: [data.email1, data.email2, data.email3, data.email4] };
     alert(JSON.stringify(data));
   };
 
