@@ -20,7 +20,7 @@ export class DatabaseService {
       console.log(error);
       return null;
     }
-    console.log(data[0].path[data[0].level - 1]);
+    // console.log(data[0].path[data[0].level - 1]);
     return await this.client
       .from("questions")
       .select()

@@ -19,11 +19,10 @@ function Leaderboard() {
     { key: "number", name: "SL No." },
     { key: "name", name: "Team Name" },
     { key: "level", name: "Level" },
-    { key: "points", name: "Points" },
   ];
 
   const renderCell = useCallback((team, columnKey) => {
-    const { name, level, points } = team;
+    const { name, level } = team;
     switch (columnKey) {
       case "number":
         return <p>{numFormat(teams.indexOf(team) + 1)}</p>;
@@ -31,8 +30,6 @@ function Leaderboard() {
         return <p>{name}</p>;
       case "level":
         return <p>{level}</p>;
-      case "points":
-        return <p>{points}</p>;
     }
   });
 
@@ -41,7 +38,7 @@ function Leaderboard() {
   });
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col items-center lg:w-[75%] w-full space-y-6">
       <p className="text-2xl font-bold">Leaderboard</p>
       <Table
         isStriped

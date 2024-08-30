@@ -6,20 +6,20 @@ import databaseService from "../supabase/database";
 import { useNavigate } from "react-router-dom";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
 
-function QuizCard({ question: { id, created_at, title, points, level, media, media_type, answer }, index, className = "", teamId, hintsLeft, skipsLeft, hintUsed }) {
+function QuizCard({ question: { id, created_at, title, points, level, media_link, media_type, answer }, index, className = "", teamId, hintsLeft, skipsLeft, hintUsed }) {
   const navigate = useNavigate();
   const [hint, setHint] = useState(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const Media = () => {
     if (media_type == "image") {
-      return <img src={media} className="aspect-video object-cover rounded-lg max-w-[600px]" alt="image" />;
+      return <img src={media_link} className="aspect-video object-contain rounded-lg w-full" alt="image" />;
     } else if (media_type == "video") {
-      return <video autoPlay controls className="aspect-video object-cover rounded-lg max-w-[600px]" src={media} />;
+      return <video autoPlay controls className="aspect-video object-cover rounded-lg w-full" src={media_link} />;
     } else if (media_type == "audio") {
       return (
         <div>
-          <audio controls autoPlay src={media} />
+          <audio controls autoPlay src={media_link} />
         </div>
       );
     }
