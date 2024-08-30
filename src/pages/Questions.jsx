@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { QuizCard } from "../components";
-import questions from "../data/questions";
 import databaseService from "../supabase/database";
 import { getTeamId } from "../utils/Helper";
 

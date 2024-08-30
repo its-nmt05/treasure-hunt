@@ -1,10 +1,17 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input } from "@nextui-org/react";
+import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Select, SelectItem } from "@nextui-org/react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useForm, Controller } from "react-hook-form";
 import databaseService from "../supabase/database";
 import { getTeamId, saveTeamId } from "../utils/Helper";
+import { PATHS } from "../data/questionPaths";
+
+const pathOptions = [
+  { key: "path1", label: "Path 1" },
+  { key: "path2", label: "Path 2" },
+  { key: "path3", label: "Path 3" },
+];
 
 const groupedByLevel = (questions) =>
   questions.reduce((acc, question) => {
@@ -58,26 +65,33 @@ function Register() {
       email6: null,
       mobile1: "",
       teamName: "",
+      path: "1",
     },
   });
 
   const onSubmit = async (data) => {
-    const questions = await databaseService.getAllQuestions();
+    // const questions = await databaseService.getAllQuestions();
 
-    if (questions.status != 200) return null;
+    // if (questions.status != 200) return null;
 
-    let questionsDataByLevel = groupedByLevel(questions.data);
-    let generatedPath = shuffleQuestions(questionsDataByLevel);
+    // let questionsDataByLevel = groupedByLevel(questions.data);
+    // let generatedPath = shuffleQuestions(questionsDataByLevel);
 
     let teamData = {
       name: data.teamName,
-      members: [data.email1, data.email2, data.email3, data.email4],
+      members: [
+        { email: data.email1, mobile: data.mobile1, name: data.name1 },
+        { email: data.email2, name: data.name2 },
+        { email: data.email3, name: data.name3 },
+        { email: data.email4, name: data.name4 },
+        { email: data.email5, name: data.name5 },
+        { email: data.email6, name: data.name6 },
+      ],
     };
 
     const res = await databaseService.register(teamData);
     if (!res.error) {
-      const updateRes = await databaseService.generatePath(generatedPath, res.data);
-      console.log(updateRes, generatedPath, res.data);
+      const updateRes = await databaseService.generatePath(PATHS[data.path], res.data);
       saveTeamId(res.data);
       navigate(`/team`);
     } else {
@@ -116,6 +130,30 @@ function Register() {
                 />
               )}
             />
+            <Controller
+              name="path"
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Select
+                  variant="bordered"
+                  placeholder="Select a Path"
+                  aria-label="Path"
+                  value={value}
+                  onBlur={onBlur}
+                  onChange={onChange}
+                  onClear={() => setValue("path", "")}
+                  errorMessage={errors.path && "Path is required"}
+                  validationState={errors.path ? "invalid" : "valid"}
+                >
+                  {pathOptions.map((option) => (
+                    <SelectItem key={option.key}>{option.label}</SelectItem>
+                  ))}
+                </Select>
+              )}
+            />
             <Divider />
             <Controller
               name="name1"
@@ -144,10 +182,6 @@ function Register() {
               control={control}
               rules={{
                 required: true,
-                validate: {
-                  iiserb: (value) => value.includes("24@iiserb.ac.in"),
-                  duplicateEmails: (value, formValues) => value !== formValues.email2 || value !== formValues.email3 || value !== formValues.email4,
-                },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
@@ -189,9 +223,6 @@ function Register() {
               control={control}
               rules={{
                 required: true,
-                validate: {
-                  duplicateEmails: (value, formValues) => value !== formValues.name1 || value !== formValues.name3 || value !== formValues.name4,
-                },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
@@ -211,10 +242,6 @@ function Register() {
               control={control}
               rules={{
                 required: true,
-                validate: {
-                  iiserb: (value) => value.includes("24@iiserb.ac.in"),
-                  duplicateEmails: (value, formValues) => value !== formValues.email1 || value !== formValues.email3 || value !== formValues.email4,
-                },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
@@ -237,9 +264,6 @@ function Register() {
               control={control}
               rules={{
                 required: true,
-                validate: {
-                  duplicateEmails: (value, formValues) => value !== formValues.name1 || value !== formValues.name2 || value !== formValues.name4,
-                },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
@@ -259,10 +283,6 @@ function Register() {
               control={control}
               rules={{
                 required: true,
-                validate: {
-                  iiserb: (value) => value.includes("24@iiserb.ac.in"),
-                  duplicateEmails: (value, formValues) => value !== formValues.email2 || value !== formValues.email1 || value !== formValues.email4,
-                },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
@@ -307,10 +327,6 @@ function Register() {
               control={control}
               rules={{
                 required: true,
-                validate: {
-                  iiserb: (value) => value.includes("24@iiserb.ac.in"),
-                  duplicateEmails: (value, formValues) => value !== formValues.email2 || value !== formValues.email3 || value !== formValues.email1,
-                },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
@@ -352,11 +368,6 @@ function Register() {
             <Controller
               name="email5"
               control={control}
-              rules={{
-                validate: {
-                  iiserb: (value) => value.includes("24@iiserb.ac.in"),
-                },
-              }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
                   placeholder="Enter email of member 4"
@@ -397,11 +408,6 @@ function Register() {
             <Controller
               name="email6"
               control={control}
-              rules={{
-                validate: {
-                  iiserb: (value) => value.includes("24@iiserb.ac.in"),
-                },
-              }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
                   placeholder="Enter email of member 5"
