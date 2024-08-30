@@ -45,36 +45,25 @@ function Home() {
             then [boom]
             <br />
             <br />
-            [first clue]
-            <br />
-            <br />
             Journal : Dr. Surma accidentally discovered an algorithm to expand
             individual alters into highly unstable split copies. The first
             demonstration, shortly follows.
             <br />
             <br />
-            Here, the paths are supposed to split. You can have two questions,
-            i.e. two short attempts at distracting the agents before the
-            unstable copies merge into one.
-            <br />
-            <br />
-            The plot, after merging is as follows : Surma is a rapidly evolving
-            AI, as you get closer and closer to the kill switch, he imitates
-            defensive mechanisms within the immune system and ramps up his
-            defenses - simultaneously rushing the Federation servers with T-bots
-            designed to destroy what they cannot absorb. Just before the last
-            question, Surma starts breaking down, asking you to end his misery
-            as he ends you. If you manage to solve it in time, the killswitch
-            activates and Surma's alter dies - triggering a final monologue from
-            the Federation server admins, explaining that Surma's attacks and
-            his eventual demise are a necessary cycle - the Feds are constantly
-            being attacked by hackers and bounty hunters - the servers are no
-            longer understood by any one administrator - it's an ecosystem
-            equivalent to that of earth's. The only way to survive is
-            acknowledge our mutual dependence and build through the devastation.
-            <br />
-            <br />I can expand upon the text once I have the questions, aligning
-            them with the plot.
+            Surma is a rapidly evolving AI, as you get closer and closer to the
+            kill switch, he imitates defensive mechanisms within the immune
+            system and ramps up his defenses - simultaneously rushing the
+            Federation servers with T-bots designed to destroy what they cannot
+            absorb. Just before the last question, Surma starts breaking down,
+            asking you to end his misery as he ends you. If you manage to solve
+            it in time, the killswitch activates and Surma's alter dies -
+            triggering a final monologue from the Federation server admins,
+            explaining that Surma's attacks and his eventual demise are a
+            necessary cycle - the Feds are constantly being attacked by hackers
+            and bounty hunters - the servers are no longer understood by any one
+            administrator - it's an ecosystem equivalent to that of earth's. The
+            only way to survive is acknowledge our mutual dependence and build
+            through the devastation.
           </p>
         </CardBody>
       </Card>
