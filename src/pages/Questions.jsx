@@ -16,13 +16,12 @@ function Questions() {
       setQuestion(res.data ? res.data[0] : null);
     });
     databaseService.getPowerUpDetails(teamId).then((res, error) => setPowerUps(res.data.length > 0 ? res.data[0] : null));
-    console.log(11, powerUps);
   }, []);
 
   return (
     <div className="space-y-12">
       {/* <p className="font-bold">Team Name: {teamName}</p> */}
-      <h2 className="font-bold text-[2em] text-center">Level : {question.level != undefined ? question.level : null} / 2</h2>
+      <h2 className="font-bold text-[2em] text-center">Level : {question.level != undefined ? question.level : null} / 13</h2>
       <QuizCard
         teamId={teamId}
         question={question}

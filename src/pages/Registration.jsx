@@ -205,7 +205,7 @@ function Register() {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
-                  placeholder="Enter email of team leader"
+                  placeholder="Enter mobile number of team leader"
                   variant="bordered"
                   value={value}
                   onBlur={onBlur}

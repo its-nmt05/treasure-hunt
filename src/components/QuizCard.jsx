@@ -91,10 +91,9 @@ function QuizCard({ question: { id, created_at, title, points, level, media, med
           <CardHeader>
             <div className="flex flex-col space-y-5">
               <div>
-                <p className="font-bold text-2xl">
-                  Q{index + 1}. {title}
-                </p>
-                <p className="text-default-600">Pts: {points}</p>
+                <p className="font-bold text-2xl">Q{index + 1}.</p>
+                <p className="text-lg">{title}</p>
+                {/* <p className="text-default-600">Pts: {points}</p> */}
               </div>
               <Media />
             </div>
