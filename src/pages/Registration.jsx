@@ -100,7 +100,7 @@ function Register() {
   };
 
   return (
-    <div className="space-y-4 lg:max-w-[60%]">
+    <div className="space-y-4 w-full lg:max-w-[60%]">
       <Card isBlurred>
         <CardHeader className="p-6">
           <p className="font-bold text-xl">Register Your Team</p>
