@@ -13,7 +13,7 @@ function Header() {
     <Navbar isBordered maxWidth="full">
       <NavbarContent>
         <NavbarBrand>
-          <p className="text-lg font-bold">24' Freshers Quiz</p>
+          <p className="text-lg font-bold">Treasure Hunt 24'</p>
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent justify="center">
