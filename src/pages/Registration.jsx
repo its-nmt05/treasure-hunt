@@ -7,11 +7,12 @@ import databaseService from "../supabase/database";
 import { getTeamId, saveTeamId } from "../utils/Helper";
 import { PATHS } from "../data/questionPaths";
 
-const pathOptions = [
-  { key: "path1", label: "Path 1" },
-  { key: "path2", label: "Path 2" },
-  { key: "path3", label: "Path 3" },
-];
+const question1 = {
+  id: 0,
+  title: `Dr. Surma Bhopali is extremely particular about his equipment brands—each choice is deliberate, even in the heart of his domain. Hidden in the atrium,\na name both familiar and strange awaits your discovery.`,
+  media_link: null,
+  media_type: null,
+};
 
 const groupedByLevel = (questions) =>
   questions.reduce((acc, question) => {
@@ -65,7 +66,7 @@ function Register() {
       email6: null,
       mobile1: "",
       teamName: "",
-      path: "1",
+      path: "",
     },
   });
 
@@ -101,12 +102,50 @@ function Register() {
 
   return (
     <div className="space-y-4 w-full lg:max-w-[60%]">
-      <Card isBlurred>
-        <CardHeader className="p-6">
-          <p className="font-bold text-xl">Register Your Team</p>
-        </CardHeader>
-      </Card>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <Card className="p-2 mb-4">
+          <CardHeader>
+            <div className="flex flex-col space-y-5">
+              <div>
+                <p className="font-bold text-2xl">Q0.</p>
+                <p className="text-lg">{question1.title}</p>
+                {/* <p className="text-default-600">Pts: {points}</p> */}
+              </div>
+              {/* <Media /> */}
+            </div>
+          </CardHeader>
+          <CardBody>
+            <Controller
+              name="path"
+              control={control}
+              rules={{
+                required: true,
+                validate: {
+                  answer: (value) => value === "rikon" || value === "cisco" || value === "nuspak",
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  classNames=""
+                  style={{ margin: "0.5em" }}
+                  placeholder="Enter your answer"
+                  variant="bordered"
+                  value={value}
+                  onBlur={onBlur}
+                  onChange={onChange}
+                  onClear={() => setValue("path", "")}
+                  errorMessage={errors.path && "Incorrect Answer"}
+                  validationState={errors.path ? "invalid" : "valid"}
+                />
+              )}
+            />
+          </CardBody>
+        </Card>
+        <Card isBlurred>
+          <CardHeader className="p-6">
+            <p className="font-bold text-xl">Register Your Team</p>
+          </CardHeader>
+        </Card>
         <Card isBlurred>
           <CardBody className="flex gap-3">
             <Controller
@@ -130,7 +169,7 @@ function Register() {
                 />
               )}
             />
-            <Controller
+            {/* <Controller
               name="path"
               control={control}
               rules={{
@@ -153,7 +192,7 @@ function Register() {
                   ))}
                 </Select>
               )}
-            />
+            /> */}
             <Divider />
             <Controller
               name="name1"
@@ -205,7 +244,7 @@ function Register() {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
-                  placeholder="Enter mobile number of team leader"
+                  placeholder="Enter mobile number"
                   variant="bordered"
                   value={value}
                   onBlur={onBlur}
