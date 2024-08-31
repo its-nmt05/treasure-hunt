@@ -8,6 +8,7 @@ function numFormat(num) {
 }
 
 function timeFormat(timeString) {
+    if (!timeString) return null
     return new Date(timeString).toLocaleString()
 }
 
