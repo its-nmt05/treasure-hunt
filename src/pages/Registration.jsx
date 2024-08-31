@@ -141,12 +141,12 @@ function Register() {
             />
           </CardBody>
         </Card>
-        <Card isBlurred>
+        <Card className="mb-4">
           <CardHeader className="p-6">
             <p className="font-bold text-xl">Register Your Team</p>
           </CardHeader>
         </Card>
-        <Card isBlurred>
+        <Card>
           <CardBody className="flex gap-3">
             <Controller
               name="teamName"
