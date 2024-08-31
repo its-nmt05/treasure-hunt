@@ -1,62 +1,29 @@
-import { Button, Card, CardHeader, Divider, Input } from "@nextui-org/react"
-import React, { useState } from "react"
-import { numFormat } from "../utils/Helper"
-import { useForm, Controller } from "react-hook-form"
-import databaseService from "../supabase/database"
-import { useNavigate } from "react-router-dom"
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-} from "@nextui-org/react"
+import { Button, Card, CardBody, CardHeader, Divider, Input } from "@nextui-org/react";
+import React, { useState } from "react";
+import { numFormat } from "../utils/Helper";
+import { useForm, Controller } from "react-hook-form";
+import databaseService from "../supabase/database";
+import { useNavigate } from "react-router-dom";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
 
-function QuizCard({
-  question: {
-    id,
-    title,
-    media_link,
-    media_type,
-  },
-  index,
-  className = "",
-  teamId,
-  hintsLeft,
-  skipsLeft,
-  hintUsed,
-}) {
-  const navigate = useNavigate()
-  const [hint, setHint] = useState(null)
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+function QuizCard({ question: { id, title, media_link, media_type }, index, className = "", teamId, hintsLeft, skipsLeft, hintUsed }) {
+  const navigate = useNavigate();
+  const [hint, setHint] = useState(null);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const Media = () => {
     if (media_type == "image") {
-      return (
-        <img
-          src={media_link}
-          className="aspect-video object-contain rounded-lg w-full"
-          alt="image"
-        />
-      )
+      return <img src={media_link} className="aspect-video object-contain rounded-lg w-full" alt="image" />;
     } else if (media_type == "video") {
-      return (
-        <video
-          autoPlay
-          controls
-          className="aspect-video object-cover rounded-lg w-full"
-          src={media_link}
-        />
-      )
+      return <video autoPlay controls className="aspect-video object-cover rounded-lg w-full" src={media_link} />;
     } else if (media_type == "audio") {
       return (
         <div>
           <audio controls autoPlay src={media_link} />
         </div>
-      )
+      );
     }
-  }
+  };
 
   const {
     register,
@@ -70,7 +37,7 @@ function QuizCard({
     defaultValues: {
       answer: "",
     },
-  })
+  });
 
   const onSubmit = (data) => {
     databaseService
@@ -81,28 +48,24 @@ function QuizCard({
       })
       .then(({ data, error }) => {
         if (data) {
-          navigate(0)
+          navigate(0);
         }
-      })
-  }
+      });
+  };
 
   const getHint = () => {
-    databaseService
-      .get_hint({ question_id: id, team_id: teamId })
-      .then(({ data, error }) => {
-        setHint(data)
-        onOpen()
-      })
-  }
+    databaseService.get_hint({ question_id: id, team_id: teamId }).then(({ data, error }) => {
+      setHint(data);
+      onOpen();
+    });
+  };
 
   const skipQuestion = () => {
-    databaseService
-      .skip_question({ question_id: id, team_id: teamId })
-      .then(({ data, error }) => {
-        console.log(data, error)
-        navigate(0)
-      })
-  }
+    databaseService.skip_question({ question_id: id, team_id: teamId }).then(({ data, error }) => {
+      console.log(data, error);
+      navigate(0);
+    });
+  };
 
   return (
     <>
@@ -135,79 +98,62 @@ function QuizCard({
               <Media />
             </div>
           </CardHeader>
-        </Card>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {"answerType" != "choices" ? (
-            <div className="flex flex-col justify-center gap-2">
-              <Controller
-                name="answer"
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
-                    classNames=""
-                    style={{ margin: "0.5em" }}
-                    placeholder="Enter your answer"
-                    variant="bordered"
-                    value={value}
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    onClear={() => setValue("answer", "")}
-                    errorMessage={errors.answer && "Incorrect Answer"}
+          <CardBody>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {"answerType" != "choices" ? (
+                <div className="flex flex-col justify-center gap-2">
+                  <Controller
+                    name="answer"
+                    control={control}
+                    rules={{
+                      required: true,
+                    }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input
+                        classNames=""
+                        style={{ margin: "0.5em" }}
+                        placeholder="Enter your answer"
+                        variant="bordered"
+                        value={value}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        onClear={() => setValue("answer", "")}
+                        errorMessage={errors.answer && "Incorrect Answer"}
+                      />
+                    )}
                   />
-                )}
-              />
-              <Button
-                size="lg"
-                color="primary"
-                className="w-200 mx-auto"
-                type="submit"
-              >
-                <p className="text-lg">Submit</p>
-              </Button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 gap-4">
-              {/* {options.map((option, index) => (
+                  <Button size="lg" color="primary" className="w-200 mx-auto" type="submit">
+                    <p className="text-lg">Submit</p>
+                  </Button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-4">
+                  {/* {options.map((option, index) => (
               <Card isHoverable isPressable key={index} className="p-4">
                 <p className="text-lg">
                   <strong>{numFormat(index + 1)}</strong> {option}
                 </p>
               </Card>
             ))} */}
-            </div>
-          )}
-          <Divider className="my-4" />
-          <div className="flex gap-2 justify-center mt-2">
-            <Button
-              size="lg"
-              color="secondary"
-              className="w-200"
-              disabled={hintsLeft == 0}
-              onPress={getHint}
-            >
-              <p className="text-lg">
-                {hintUsed || hint ? "Show Hint" : `Use a hint (${hintsLeft})`}
-              </p>
-            </Button>
-            {skipsLeft != 0 && (
-              <Button
-                size="lg"
-                color="secondary"
-                className="w-200"
-                disabled={skipsLeft == 0}
-                onPress={skipQuestion}
-              >
-                <p className="text-lg">Skip Question ({skipsLeft})</p>
-              </Button>
-            )}
-          </div>
-        </form>
+                </div>
+              )}
+              <Divider className="my-4" />
+              <div className="flex gap-2 justify-center mt-2">
+                <Button size="lg" color="secondary" className="w-200" disabled={hintsLeft == 0} onPress={getHint}>
+                  <p className="text-lg">{hintUsed || hint ? "Show Hint" : `Use a hint (${hintsLeft})`}</p>
+                </Button>
+                {skipsLeft != 0 && (
+                  <Button size="lg" color="secondary" className="w-200" disabled={skipsLeft == 0} onPress={skipQuestion}>
+                    <p className="text-lg">Skip Question ({skipsLeft})</p>
+                  </Button>
+                )}
+              </div>
+            </form>
+          </CardBody>
+        </Card>
       </div>
     </>
-  )
+  );
 }
 
-export default QuizCard
+export default QuizCard;
