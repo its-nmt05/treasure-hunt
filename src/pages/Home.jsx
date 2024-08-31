@@ -9,12 +9,12 @@ function Home() {
 
   return (
     <div className="space-y-4 lg:max-w-[60%]">
-      <Card>
+      <Card className="bg-blue-700 text-white">
         <CardHeader className="p-6">
           <p className="font-bold text-xl">Welcome to IISER-B Freshers Treasure Hunt!!!</p>
         </CardHeader>
       </Card>
-      <Card>
+      <Card className="bg-blue-900 text-white">
         <CardBody>
           <p>
             XX/08/31 : Dr. Surma Bhopali undertook the final trial of his latest experiment. In contradiction to his earlier attempts to unify supersymmetric string theory and the Ferri-Sen
@@ -44,6 +44,9 @@ function Home() {
             and his eventual demise are a necessary cycle - the Feds are constantly being attacked by hackers and bounty hunters - the servers are no longer understood by any one administrator - it's
             an ecosystem equivalent to that of earth's. The only way to survive is acknowledge our mutual dependence and build through the devastation.
           </p>
+          <a className=" text-lg text-blue-100 underline mx-auto mt-2" href="https://drive.google.com/drive/folders/1T7tL2PORwk5K-tX7A9NmiJP1Qj40NFMa?usp=sharing">
+            Rulebook
+          </a>
         </CardBody>
       </Card>
       <Button

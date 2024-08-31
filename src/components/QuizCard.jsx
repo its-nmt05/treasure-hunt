@@ -6,6 +6,16 @@ import databaseService from "../supabase/database";
 import { useNavigate } from "react-router-dom";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
 
+function slugify(str) {
+  str = str.replace(/^\s+|\s+$/g, ""); // trim leading/trailing white space
+  str = str.toLowerCase(); // convert string to lowercase
+  str = str
+    // .replace(/[^a-z0-9 -]/g, "") // remove any non-alphanumeric characters
+    .replace(/\s+/g, "-") // replace spaces with hyphens
+    .replace(/-+/g, "-"); // remove consecutive hyphens
+  return str;
+}
+
 function QuizCard({ question: { id, title, media_link, media_type }, index, className = "", teamId, hintsLeft, skipsLeft, hintUsed }) {
   const navigate = useNavigate();
   const [hint, setHint] = useState(null);
@@ -44,7 +54,7 @@ function QuizCard({ question: { id, title, media_link, media_type }, index, clas
       .submit_question({
         question_id: id,
         team_id: teamId,
-        answer: data.answer.toLowerCase(),
+        answer: slugify(data.answer.toLowerCase()),
       })
       .then(({ data, error }) => {
         if (data) {

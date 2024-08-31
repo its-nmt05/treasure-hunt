@@ -7,34 +7,34 @@ import databaseService from "../supabase/database";
 import { getTeamId, saveTeamId } from "../utils/Helper";
 import { PATHS } from "../data/questionPaths";
 
-const question1 = {
-  id: 0,
-  title: `Dr. Surma Bhopali is extremely particular about his equipment brands—each choice is deliberate, even in the heart of his domain. Hidden in the atrium,\na name both familiar and strange awaits your discovery.`,
-  media_link: null,
-  media_type: null,
-};
-
-const groupedByLevel = (questions) =>
-  questions.reduce((acc, question) => {
-    const { level } = question;
-    if (!acc[level]) {
-      acc[level] = [];
-    }
-    acc[level].push(question);
-    return acc;
-  }, {});
-
-const shuffleQuestions = (groupedQuestions) => {
-  let questionsArr = [];
-  for (const level of Object.keys(groupedQuestions)) {
-    questionsArr.push(groupedQuestions[level][Math.random() * (groupedQuestions[level].length - 1)].id);
-  }
-  return questionsArr;
-};
+const question0s = [
+  {
+    id: 0,
+    title: `Dr. Surma Bhopali, in his wild experimentation, has left clues all around. His first identity was obsessed with time and capturing moments, a curious link between a ticking object and something that rhymes with a famous photography brand. Can you uncover it?`,
+    media_link: null,
+    media_type: null,
+    answers: ["rikon", "Rikon"],
+  },
+  {
+    id: 1,
+    title: `In his quest for connectivity, Bhopali’s second self kept the network running smooth and well. In the heart of his domain, a name you’ll find that routes the global tech spell. It’s a term that, with a little rhythm, echoes a festive vibe, a subtle hint that dances with a party’s jive. Can you uncover this vital piece of his network?"`,
+    media_link: null,
+    media_type: null,
+    answers: ["cisco", "Cisco"],
+  },
+  {
+    id: 2,
+    title: `You might be cool, but Bhopali’s cooler! His third identity left a curious name at the very heart of this building. A strange blend of letters, both familiar and foreign, awaits in the atrium waiting to give you a new spark. Can you discover the name that sits at the core of it all?`,
+    media_link: null,
+    media_type: null,
+    answers: ["nuspak", "Nuspak"],
+  },
+];
 
 function Register() {
   const navigate = useNavigate();
   const teamId = getTeamId();
+  const question0 = question0s[Math.floor(Math.random() * 3)];
 
   useEffect(() => {
     if (teamId) {
@@ -92,7 +92,7 @@ function Register() {
 
     const res = await databaseService.register(teamData);
     if (!res.error) {
-      const updateRes = await databaseService.generatePath(PATHS[data.path], res.data);
+      const updateRes = await databaseService.generatePath(PATHS[data.path.toLowerCase().replace(/\s+/g, "")], res.data);
       saveTeamId(res.data);
       navigate(`/team`);
     } else {
@@ -108,7 +108,7 @@ function Register() {
             <div className="flex flex-col space-y-5">
               <div>
                 <p className="font-bold text-2xl">Q0.</p>
-                <p className="text-lg">{question1.title}</p>
+                <p className="text-lg">{question0.title}</p>
                 {/* <p className="text-default-600">Pts: {points}</p> */}
               </div>
               {/* <Media /> */}
@@ -121,7 +121,7 @@ function Register() {
               rules={{
                 required: true,
                 validate: {
-                  answer: (value) => value === "rikon" || value === "cisco" || value === "nuspak",
+                  answer: (value) => question0.answers.includes(value.toLowerCase().replace(/\s+/g, "")),
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
