@@ -61,7 +61,7 @@ export class DatabaseService {
   }
 
   async get_leaderboard() {
-    return await this.client.from("teams").select().order("points", { ascending: false });
+    return await this.client.from("teams").select().order("level", { ascending: false });
   }
 }
 
