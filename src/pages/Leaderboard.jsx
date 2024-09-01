@@ -38,7 +38,7 @@ function Leaderboard() {
       case "name":
         return <p>{name}</p>
       case "level":
-        return <p>{numFormat(level)}</p>
+        return <p>{numFormat(level - 1)}</p>
       case "last_submitted":
         return <p>{timeFormat(last_submitted) ?? "Not submitted"}</p>
     }
