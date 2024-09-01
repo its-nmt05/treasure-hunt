@@ -17,7 +17,7 @@ function saveTeamId(teamId) {
 }
 
 function getTeamId() {
-    return 46
+    return localStorage.getItem("teamId")
 }
 
 export { numFormat, timeFormat, saveTeamId, getTeamId }
