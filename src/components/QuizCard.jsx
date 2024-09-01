@@ -152,7 +152,7 @@ function QuizCard({ question: { id, title, media_link, media_type }, index, clas
                 <Button size="lg" color="secondary" className="w-200" disabled={hintsLeft == 0} onPress={getHint}>
                   <p className="text-lg">{hintUsed || hint ? "Show Hint" : `Use a hint (${hintsLeft})`}</p>
                 </Button>
-                {skipsLeft != 0 && (
+                {(skipsLeft != 0 && true && id != 19) && (
                   <Button size="lg" color="secondary" className="w-200" disabled={skipsLeft == 0} onPress={skipQuestion}>
                     <p className="text-lg">Skip Question ({skipsLeft})</p>
                   </Button>
